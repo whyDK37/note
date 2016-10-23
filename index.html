@@ -9,13 +9,15 @@ title:
     <a href="https://github.com/whyDK37/note/zipball/master" class="btn">Download .zip</a>
     <a href="https://github.com/whyDK37/note/tarball/master" class="btn">Download .tar.gz</a>
 </section>
-<h2>{{ page.title }}</h2>
-<p>最新文章</p>
-<ul>
-    　　{% for post in site.posts %}
-    <li>{{ post.date | date_to_string }}
-        <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
-        {{ post.excerpt }}
-    </li>
-    　　{% endfor %}
-</ul>
+<section class="main-content">
+    <!--<h2>{{ page.title }}</h2>-->
+    <p>最新文章</p>
+    <ul>
+        　　{% for post in site.posts %}
+        <li>{{ post.date | date_to_string }}
+            <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+            {{ post.excerpt }}
+        </li>
+        　　{% endfor %}
+    </ul>
+</section>
