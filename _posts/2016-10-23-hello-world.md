@@ -20,7 +20,7 @@ the removeObserver method. In both cases, an instance of the *callback* interfac
 
 观察者订阅调用addObserver，取消订阅调用removeObserver，两种操作的参数都回调接口。
 
-{% highlight java %}
+{% highlight java linenos %}
 ```
 
 import java.util.*;
