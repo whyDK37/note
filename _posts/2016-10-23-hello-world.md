@@ -301,7 +301,7 @@ private void notifyElementAdded(E element) {
 #### 在同步块中尽可能的少操作
    如果需要进行大量操作，可以考虑把这些操作移出同步块。
 
-
+![My helpful screenshot]({{ site.url }}/assets/screenshot.jpg)
 
 
 {{ page.date | date_to_string }}
