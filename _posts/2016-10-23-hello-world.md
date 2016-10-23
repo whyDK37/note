@@ -1,6 +1,6 @@
 ---
 layout: default
-title: concurrency 同步
+title: concurrency - Avoid excessive synchronization
 ---
 # {{ page.title }}
 
