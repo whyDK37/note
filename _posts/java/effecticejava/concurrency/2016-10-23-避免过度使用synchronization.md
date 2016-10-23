@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: article
 title: concurrency - Avoid excessive synchronization
 excerpt_separator: <!--more-->
 ---
