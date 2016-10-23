@@ -4,6 +4,7 @@ title: concurrency 同步
 ---
 ## {{ page.title }}
 ### avoid excessive synchronization 避免过度使用synchronization
+
 Here is an example,which implements an observable set wrapper.It allow clients to
 subscribe to notifications when elements are added to the set.this is the *Observer* pattern.
 for brevity`s, the class does not provide notifications when elements are removed from the set.
