@@ -1,7 +1,10 @@
 ---
 layout: default
 title: concurrency - Avoid excessive synchronization
+excerpt_separator: <!--more-->
 ---
+避免过度使用synchronization
+<!--more-->
 # {{ page.title }}
 
 ## avoid excessive synchronization 避免过度使用synchronization
