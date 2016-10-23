@@ -3,7 +3,10 @@ layout: default
 title: Mybatis Interceptor 讲解
 excerpt_separator: <!--more-->
 ---
-
+Mybatis是比较流行的数据库持久层架构，可以很方便的与spring集成。框架比较轻量化，所以学习和上手的时间短，是一个不错的选择。
+作为一个开源框架，Mybatis的设计值得称道。其中之一就是我们可以通过插件很方便的扩展Mybatis的功能。
+下面我们通过一个简单的例子说明其工作原理。
+<!--more-->
 # Mybatis Interceptor 讲解
 
 ## 简介

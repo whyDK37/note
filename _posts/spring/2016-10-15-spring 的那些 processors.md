@@ -1,7 +1,10 @@
 ---
 layout: default
 title: spring 的那些 processors
+excerpt_separator: <!--more-->
 ---
+
+<!--more-->
 # spring笔记
 ## spring 的那些 processors
 **BeanFactoryPostProcessor**
