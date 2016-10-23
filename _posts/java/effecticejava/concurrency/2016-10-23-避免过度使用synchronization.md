@@ -20,7 +20,6 @@ the removeObserver method. In both cases, an instance of the *callback* interfac
 
 观察者订阅调用addObserver，取消订阅调用removeObserver，两种操作的参数都回调接口。
 
-{% highlight java linenos %}
 ```
 
 import java.util.*;
@@ -88,7 +87,6 @@ public class ObservableSet0<E> extends HashSet<E> {
 }
 
 ```
-{% endhighlight %}
 The result will print 0 through 99.Now let`s try something els.Suppose we replace the addObserver call with one that
 passes an observer that prints the Integer value that was added to the set and removes itself if the value is 23.
 
