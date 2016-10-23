@@ -1,6 +1,6 @@
 ---
 layout: default
-title: concurrency - Avoid excessive synchronization
+title: spring 的那些 processors
 excerpt_separator: <!--more-->
 ---
 # spring笔记
