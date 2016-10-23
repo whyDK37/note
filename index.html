@@ -2,7 +2,7 @@
 layout: default
 title:
 ---
-<h2>why 的笔记</h2>
+<h2>{{ page.title }}</h2>
 <p>最新文章</p>
 <ul>
     　　{% for post in site.posts %}
@@ -10,4 +10,5 @@ title:
         <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
         {{ post.excerpt }}
     </li>
+    　　{% endfor %}
 </ul>
