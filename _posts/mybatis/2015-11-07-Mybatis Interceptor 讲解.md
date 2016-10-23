@@ -1,6 +1,6 @@
 ---
 layout: default
-title: concurrency - Avoid excessive synchronization
+title: Mybatis Interceptor 讲解
 excerpt_separator: <!--more-->
 ---
 
