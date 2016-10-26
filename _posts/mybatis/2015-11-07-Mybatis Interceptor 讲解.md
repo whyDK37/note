@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: article
 title: Mybatis Interceptor 讲解
 excerpt_separator: <!--more-->
 ---

@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: article
 title: spring 的那些 processors
 excerpt_separator: <!--more-->
 ---
