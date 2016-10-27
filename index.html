@@ -7,7 +7,7 @@ title: why 的笔记
     <h2>最新文章</h2>
     <ul>
         　　{% for post in site.posts %}
-        <li>{{ post.date | date_to_string }}
+        <li>{{ post.date | date_to_long_string }}
             <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
             {{ post.excerpt }}
         </li>
