@@ -14,6 +14,7 @@ Interface for a resource descriptor that abstracts from the actual type of under
 
 ## resource 接口方法
 
+Resource 接口继承自 InputStreamSource ，接口中定了了很多方法，通过方法名可以很直观的知道方法的功能。
 
 ``
 public interface Resource extends InputStreamSource {
@@ -105,7 +106,11 @@ public interface Resource extends InputStreamSource {
 	 */
 	String getDescription();
 }
+```
 
+InputStreamSource 中只有一个方法，返回输入流，这个方法不是所有的子类都实现了，后面我会举例说明。
+
+```
 public interface InputStreamSource {
 
 	/**
@@ -120,7 +125,52 @@ public interface InputStreamSource {
 	 * @see org.springframework.mail.javamail.MimeMessageHelper#addAttachment(String, InputStreamSource)
 	 */
 	InputStream getInputStream() throws IOException;
-
 }
-``
+```
 
+## 举例
+
+spring Resource 有很多实现，下面描述几个有代表性的实现。
+
+### AbstractResource
+
+是一个模板模式的抽象类，实现了 exists , isReadable ， isOpen ， getURI ，contentLength， 等方法，
+有些有些方法是空实现，如getFilename，createRelative，getFile，这些方法需要子类按需实现。
+
+### ClassPathResource
+
+用来加载classpath中的资源，spring在初始化的时候回使用这个类来加载xml配置文件。
+
+```
+public ClassPathXmlApplicationContext(String[] paths, Class<?> clazz, ApplicationContext parent)
+			throws BeansException {
+    super(parent);
+    Assert.notNull(paths, "Path array must not be null");
+    Assert.notNull(clazz, "Class argument must not be null");
+    this.configResources = new Resource[paths.length];
+    for (int i = 0; i < paths.length; i++) {
+        this.configResources[i] = new ClassPathResource(paths[i], clazz);
+    }
+    refresh();
+}
+```
+
+### FileSystemResource
+
+实现了 WritableResource 接口，该实现由写的能力。支持系统文件资源
+
+```
+FileSystemResource resource = new FileSystemResource(System.getProperty("java.io.tmpdir") + "/tmp.ftl");
+```
+
+### UrlResource
+
+可以表示URl和file资源。
+
+```
+new UrlResource("http://localhost:8080")
+```
+
+# 小结
+
+我们可以在项目中使用Resource接口，灵活的使用各种资源，这样屏蔽了实现，系统的兼容性更好。
