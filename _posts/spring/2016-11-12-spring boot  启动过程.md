@@ -346,7 +346,9 @@ public interface GenericApplicationListener extends ApplicationListener<Applicat
 ApplicationListener<E extends ApplicationEvent>
 ```
 
-继承自 GenericApplicationListener 的 GenericApplicationListenerAdapter是一个适配器，他代理真正的 Listener，并实现了扩展方法来判断是否支持此事件。
+继承自 GenericApplicationListener 的 GenericApplicationListenerAdapter是一个适配器，
+他代理真正的 Listener，并实现了扩展方法来判断是否支持此事件。如下图：
+![](https://github.com/whyDK37/note/blob/master/_posts/spring/event-listener.png?raw=true)
 
 *这里的判断是个亮点！*。首先在此看 ResolvableType ，他是4.0新加入的类。从doc上可以看出，它是一个工具类，能够匹配父类，接口，甚至泛型，功能还是相当强大的。
 事件的判断全靠它来完成关键的判断。我们看两个初始化时加载的 Listener：
