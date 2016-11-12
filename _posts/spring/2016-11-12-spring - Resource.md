@@ -10,4 +10,5 @@ Interface for a resource descriptor that abstracts from the actual type of under
  such as a file or class path resource.
 
 上面是Resource接口的doc描述，很明确的定义了接口的职责。它是资源的抽象，为应用提供了统一的访问api。
-[uml]()
+![](https://github.com/whyDK37/note/blob/master/_posts/spring/Resource.png?raw=true)
+
