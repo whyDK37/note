@@ -8,6 +8,7 @@ excerpt_separator: <!--more-->
 # spring boot
 ## 启动
 spring boot 的启动代码很简单，最精简的代码如下。
+
 ```
 @Configuration
 @SpringBootApplication
@@ -17,20 +18,24 @@ public class Application {
    }
 }
 ```
+
 **注意：spring启动的main方法必须包含在包内**
 
 启动代码很简单，但在初始化过程中，spring做了很多工作，打开run方法，我们可以看到如下代码
+
 ```
 public static ConfigurableApplicationContext run(Object[] sources, String[] args) {
     return new SpringApplication(sources).run(args);
 }
 ```
+
 大致分为两部分。
 1. 加载配置信息
 2. 启动
 
 ## 加载配置信息
 初始化的主要工作都在这个方法中完成。
+
 ```
 private void initialize(Object[] sources) {
     if (sources != null && sources.length > 0) {
@@ -45,6 +50,7 @@ private void initialize(Object[] sources) {
 ```
 
 通过判断是否包含WEB_ENVIRONMENT_CLASSES中定义的类来决定是否是web项目。
+
 ```
 private static final String[] WEB_ENVIRONMENT_CLASSES = { "javax.servlet.Servlet",
 			"org.springframework.web.context.ConfigurableWebApplicationContext" };
@@ -61,6 +67,7 @@ private boolean deduceWebEnvironment() {
 
 下面这段代码比较长，目的是通过META-INF/spring.factories中的org.springframework.context.ApplicationContextInitializer
 读取配置并初始化，排序。
+
 ```
 public void setInitializers(
         Collection<? extends ApplicationContextInitializer<?>> initializers) {
@@ -134,11 +141,13 @@ public static List<String> loadFactoryNames(Class<?> factoryClass, ClassLoader c
 ```
 
 初始化ApplicationListener的过程和ApplicationContextInitializer一样，就不在赘述了。
+
 ```
 setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
 ```
 
 通过调用栈获取启动main函数
+
 ```
 this.mainApplicationClass = deduceMainApplicationClass();
 
@@ -157,12 +166,14 @@ private Class<?> deduceMainApplicationClass() {
     return null;
 }
 ```
+
 上面初始化的配置信息在启动的时候会在相应的位置起作用，下面我们分解启动。
 
 
 ### 启动
 经过上面的初始化过程，我们已经有了一个SpringApplication对象，根据SpringApplication类的静态run方法分析，
 接下来会调用SpringApplication对象的run方法。我们接下来就分析这个对象的run方法。
+
 ```
 public ConfigurableApplicationContext run(String... args) {
     // 启动计时器
@@ -199,6 +210,7 @@ public ConfigurableApplicationContext run(String... args) {
     }
 }
 ```
+
 上面的方法通过名字很明确它实现的功能。
 
 有关java.awt.headless的内容参考：
@@ -206,6 +218,7 @@ public ConfigurableApplicationContext run(String... args) {
 
 
 我们来详细的观察一下第一个事件，启动事件。
+
 ```
 listeners.started();
 
@@ -320,16 +333,19 @@ protected boolean supportsEvent(ApplicationListener<?> listener, ResolvableType 
     return (smartListener.supportsEventType(eventType) && smartListener.supportsSourceType(sourceType));
 }
 ```
+
 方法比较多，我们一点一点的分析。
 
 首先我们注意到事件被封装成了 ResolvableType 类，在通过 getApplicationListeners 方法过滤支持此事件的listener（初始化时加载的），
 当中还增加了缓存处理。
 
 在继续往下跟踪，发现最后是通过 supportsEvent 方法判断是否支持事件，继承关系如下。
+
 ```
 public interface GenericApplicationListener extends ApplicationListener<ApplicationEvent>, Ordered
 ApplicationListener<E extends ApplicationEvent>
 ```
+
 继承自 GenericApplicationListener 的 GenericApplicationListenerAdapter是一个适配器，他代理真正的 Listener，并实现了扩展方法来判断是否支持此事件。
 
 *这里的判断是个亮点！*。首先在此看 ResolvableType ，他是4.0新加入的类。从doc上可以看出，它是一个工具类，能够匹配父类，接口，甚至泛型，功能还是相当强大的。
@@ -361,6 +377,7 @@ public class LiquibaseServiceLocatorApplicationListener implements ApplicationLi
 其他的的事件也是相同原理。
 
 接下来是配置，由下面代码方法实现。
+
 ```
 ApplicationArguments applicationArguments = new DefaultApplicationArguments( args);
 ConfigurableEnvironment environment = prepareEnvironment(listeners, applicationArguments);
@@ -416,6 +433,7 @@ protected void configureProfiles(ConfigurableEnvironment environment, String[] a
     environment.setActiveProfiles(profiles.toArray(new String[profiles.size()]));
 }
 ```
+
 listeners.environmentPrepared(environment); 广播 ApplicationEnvironmentPreparedEvent 事件。
 
 #### 打印banner
@@ -423,6 +441,7 @@ listeners.environmentPrepared(environment); 广播 ApplicationEnvironmentPrepare
 
 #### createApplicationContext
 根据 webEnvironment 创建 DEFAULT_WEB_CONTEXT_CLASS 或 DEFAULT_CONTEXT_CLASS。
+
 ```
 /**
 * The class name of application context that will be used by default for non-web
@@ -510,6 +529,7 @@ public void refresh() throws BeansException, IllegalStateException {
 ```
 
 启动完成后，会广播事件，停止计时，整个启动过程结束。
+
 ```
 afterRefresh(context, applicationArguments);
 listeners.finished(context, null);
