@@ -464,7 +464,7 @@ public static final String DEFAULT_WEB_CONTEXT_CLASS = "org.springframework."
 ```
 
 #### refreshContext
-真正的启动现在才开始。我们看到最终调用的是refresh方法，和spring mvc 是一样的，这里就不过多解释了。
+真正的启动现在才开始。我们看到最终调用的是refresh方法。
 
 在查看代码之前，先说明一下当前 Context 对象的继承关系，请看下图：
 
@@ -489,7 +489,7 @@ protected void onRefresh() {
 }
 ```
 
-启动过程来自模板类 AbstractApplicationContext。
+启动过程来自模板类 AbstractApplicationContext，和spring mvc 是一样的，这里就不过多解释了。
 
 ```
 @Override
