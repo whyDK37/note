@@ -51,6 +51,9 @@ private void initialize(Object[] sources) {
 
 通过判断是否包含WEB_ENVIRONMENT_CLASSES中定义的类来决定是否是web项目。
 
+我们应用的是compile("org.springframework.boot:spring-boot-starter-web")， 所以间接引用了org.springframework.web.context.ConfigurableWebApplicationContext，推论为web环境。
+
+如果只引用org.springframework.boot:spring-boot-starter，就不是web项目，不会启动内置的tomcat。
 ```
 private static final String[] WEB_ENVIRONMENT_CLASSES = { "javax.servlet.Servlet",
 			"org.springframework.web.context.ConfigurableWebApplicationContext" };
@@ -348,9 +351,9 @@ ApplicationListener<E extends ApplicationEvent>
 
 继承自 GenericApplicationListener 的 GenericApplicationListenerAdapter是一个适配器，
 他代理真正的 Listener，并实现了扩展方法来判断是否支持此事件。如下图：
-![](https://github.com/whyDK37/note/blob/master/_posts/spring/event-listener.png?raw=true)
+![](https://github.com/whyDK37/note/blob/master/_posts/spring/uml/event-listener.png?raw=true)
 
-*这里的判断是个亮点！*。首先在此看 ResolvableType ，他是4.0新加入的类。从doc上可以看出，它是一个工具类，能够匹配父类，接口，甚至泛型，功能还是相当强大的。
+*这里的判断是个亮点！* 首先在此看 ResolvableType ，他是4.0新加入的类。从doc上可以看出，它是一个工具类，能够匹配父类，接口，甚至泛型，功能还是相当强大的。
 事件的判断全靠它来完成关键的判断。我们看两个初始化时加载的 Listener：
 
 - 0 = {ConfigFileApplicationListener@2018}
@@ -463,6 +466,31 @@ public static final String DEFAULT_WEB_CONTEXT_CLASS = "org.springframework."
 #### refreshContext
 真正的启动现在才开始。我们看到最终调用的是refresh方法，和spring mvc 是一样的，这里就不过多解释了。
 
+在查看代码之前，先说明一下当前 Context 对象的继承关系，请看下图：
+
+![](https://github.com/whyDK37/note/blob/master/_posts/spring/uml/AnnotationConfigEmbeddedWebApplicationContext.png?raw=true)
+
+上面的分析已经得知当前启动的是一个web项目，
+所以在createApplicationContext()方法中创建的ApplicationContext是DEFAULT_WEB_CONTEXT_CLASS，也就是AnnotationConfigEmbeddedWebApplicationContext。
+从图中我们可以得知 AnnotationConfigEmbeddedWebApplicationContext 的继承关系。由于继承自 EmbeddedWebApplicationContext ，
+赋予了它内嵌 servlet container 的能力。启动容器的代码如下：
+
+```
+@Override
+protected void onRefresh() {
+    super.onRefresh();
+    try {
+        createEmbeddedServletContainer();
+    }
+    catch (Throwable ex) {
+        throw new ApplicationContextException("Unable to start embedded container",
+                ex);
+    }
+}
+```
+
+启动过程来自模板类 AbstractApplicationContext。
+
 ```
 @Override
 public void refresh() throws BeansException, IllegalStateException {
@@ -493,6 +521,7 @@ public void refresh() throws BeansException, IllegalStateException {
             initApplicationEventMulticaster();
 
             // Initialize other special beans in specific context subclasses.
+            // 初始化并启动 Servlet Container
             onRefresh();
 
             // Check for listener beans and register them.
