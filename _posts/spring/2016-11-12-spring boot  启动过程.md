@@ -531,6 +531,7 @@ public void refresh() throws BeansException, IllegalStateException {
             finishBeanFactoryInitialization(beanFactory);
 
             // Last step: publish corresponding event.
+            // start embed servlet container
             finishRefresh();
         }
 
